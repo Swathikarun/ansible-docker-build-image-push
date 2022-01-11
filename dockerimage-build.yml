@@ -1,0 +1,67 @@
+---
+- name: "Building a Docker image"
+  hosts: build
+  become: true
+  vars:
+    git_url: "https://github.com/Fujikomalan/devops-flask.git"
+    docker_user: "swathikarun"
+    docker_password: "Sw@th!k@4"
+    Image_name: "swathikarun/devops-flaskapp"
+  tasks:
+  
+    - name: "Build: installing Packages required for buiding Docker Image"
+      yum:
+        name:
+          - docker
+          - python2-pip
+          - git
+        state: present
+     
+    - name: "Build: Starting/Enabling Docker service"
+      service:
+        name: docker
+        state: restarted
+        enabled: true
+
+    - name: "Build: Installing Docker client for python"
+      pip:
+        name: docker-py
+        state: present
+
+    - name: "Build: Clonning the git repo of flaskapp"
+      git:
+        repo: "{{ git_url }}"
+        dest: "/var/flaskapp/"
+      register: git_status
+
+    - name: "Build: Login to Dockerhub"
+      when: git_status.changed == true
+      docker_login:
+        username: "{{ docker_user }}"
+        password: "{{ docker_password }}"
+
+
+    - name: "Build: Building a dockerimage"
+      when: git_status.changed == true
+      docker_image:
+        build:
+          path: "/var/flaskapp/"
+        name: "{{ Image_name }}"
+        tag: "{{ item }}"
+        state: present
+        push: yes
+        source: build
+      with_items:    
+        - "latest"
+        - "{{ git_status.after }}"
+
+    - name: "Build: Removing Docker Images"
+      when: git_status.changed == true
+      docker_image:
+        name: "{{ Image_name }}"
+        tag: "{{ item }}"
+        state: absent
+      with_items:
+        - "latest"
+        - "{{ git_status.after }}"    
+
