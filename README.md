@@ -122,7 +122,7 @@ An Ansible playbook which builds a docker image from a DockerFile fetched from G
   vars:
     git_url: "https://github.com/Fujikomalan/devops-flask.git"
     docker_user: "swathikarun"
-    docker_password: "Sw@th!k@4"
+    docker_password: "**********"
     Image_name: "swathikarun/devops-flaskapp"
 ```
 
@@ -131,6 +131,9 @@ An Ansible playbook which builds a docker image from a DockerFile fetched from G
 ```
 ansible-playbook -i inventory dockerimage-build.yml
 ```
+
+![flaskimage](https://user-images.githubusercontent.com/94472101/149257694-8d261085-2940-43c3-a29d-00d94cc17b93.png)
+
 
 ## Result
 
