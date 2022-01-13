@@ -33,7 +33,7 @@ An Ansible playbook which builds a docker image from a DockerFile fetched from G
  - [docker-py](https://pypi.org/project/docker-py/)
 
 ## Modules Used
- - [yum[(())
+ - [yum](https://docs.ansible.com/ansible/2.3/yum_module.html)
  - [git](https://docs.ansible.com/ansible/2.5/modules/git_module.html)
  - [service](https://docs.ansible.com/ansible/2.5/modules/service_module.html)
  - [pip](https://docs.ansible.com/ansible/2.4/pip_module.html)
